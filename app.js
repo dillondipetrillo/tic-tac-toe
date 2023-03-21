@@ -32,7 +32,7 @@ const DisplayController = (() => {
     });
   };
 
-  // check if there's a winner
+  // check if there's a winner or tie
   const _checkGameStatus = (playerMark) => {
     // check for row one matches
     if (
@@ -41,6 +41,7 @@ const DisplayController = (() => {
       _board[2] === playerMark
     ) {
       console.log(`${playerMark} is the winner!`);
+      return;
     }
 
     // check for row two matches
@@ -50,6 +51,7 @@ const DisplayController = (() => {
       _board[5] === playerMark
     ) {
       console.log(`${playerMark} is the winner!`);
+      return;
     }
 
     // check for row three matches
@@ -59,6 +61,7 @@ const DisplayController = (() => {
       _board[8] === playerMark
     ) {
       console.log(`${playerMark} is the winner!`);
+      return;
     }
 
     // check column one for matches
@@ -68,6 +71,7 @@ const DisplayController = (() => {
       _board[6] === playerMark
     ) {
       console.log(`${playerMark} is the winner!`);
+      return;
     }
 
     // check column two for matches
@@ -77,6 +81,7 @@ const DisplayController = (() => {
       _board[7] === playerMark
     ) {
       console.log(`${playerMark} is the winner!`);
+      return;
     }
 
     // check column three for matches
@@ -86,6 +91,7 @@ const DisplayController = (() => {
       _board[8] === playerMark
     ) {
       console.log(`${playerMark} is the winner!`);
+      return;
     }
 
     // check for diagonal matches
@@ -95,6 +101,7 @@ const DisplayController = (() => {
       _board[8] === playerMark
     ) {
       console.log(`${playerMark} is the winner!`);
+      return;
     }
 
     if (
@@ -103,6 +110,20 @@ const DisplayController = (() => {
       _board[6] === playerMark
     ) {
       console.log(`${playerMark} is the winner!`);
+      return;
+    }
+
+    // check if it's a tie
+    let count = 0;
+    for (let i = 0; i < _board.length; i++) {
+      if (_board[i] === "") {
+        count++;
+      }
+    }
+
+    if (count === 0) {
+      console.log("it's a tie!");
+      return;
     }
   };
 
