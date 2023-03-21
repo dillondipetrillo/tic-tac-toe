@@ -4,9 +4,7 @@ const Gameboard = () => {
 
   const getGameboard = () => _gameboard;
 
-  return {
-    getGameboard,
-  };
+  return { getGameboard };
 };
 
 const Player = (name) => {
@@ -17,27 +15,106 @@ const DisplayController = (() => {
   // cache DOM elements
   const _sqaures = document.querySelectorAll(".square");
 
-  const board = Gameboard();
+  const _boardModule = Gameboard();
+  const _board = _boardModule.getGameboard();
 
   // create players
-  const playerX = Player("X");
-  const playerO = Player("O");
+  const _playerX = Player("X");
+  const _playerO = Player("O");
+
+  let activePlayer = _playerX;
 
   // render a gameboard on DOM and add click event listeners
   const _renderBoard = () => {
     _sqaures.forEach((square, idx) => {
       square.addEventListener("click", _fillSquare);
-      square.textContent = board[idx];
+      square.textContent = _board[idx];
     });
   };
 
+  // check if there's a winner
+  const _checkGameStatus = (playerMark) => {
+    // check for row one matches
+    if (
+      _board[0] === playerMark &&
+      _board[1] === playerMark &&
+      _board[2] === playerMark
+    ) {
+      console.log(`${playerMark} is the winner!`);
+    }
+
+    // check for row two matches
+    if (
+      _board[3] === playerMark &&
+      _board[4] === playerMark &&
+      _board[5] === playerMark
+    ) {
+      console.log(`${playerMark} is the winner!`);
+    }
+
+    // check for row three matches
+    if (
+      _board[6] === playerMark &&
+      _board[7] === playerMark &&
+      _board[8] === playerMark
+    ) {
+      console.log(`${playerMark} is the winner!`);
+    }
+
+    // check column one for matches
+    if (
+      _board[0] === playerMark &&
+      _board[3] === playerMark &&
+      _board[6] === playerMark
+    ) {
+      console.log(`${playerMark} is the winner!`);
+    }
+
+    // check column two for matches
+    if (
+      _board[1] === playerMark &&
+      _board[4] === playerMark &&
+      _board[7] === playerMark
+    ) {
+      console.log(`${playerMark} is the winner!`);
+    }
+
+    // check column three for matches
+    if (
+      _board[2] === playerMark &&
+      _board[5] === playerMark &&
+      _board[8] === playerMark
+    ) {
+      console.log(`${playerMark} is the winner!`);
+    }
+
+    // check for diagonal matches
+    if (
+      _board[0] === playerMark &&
+      _board[4] === playerMark &&
+      _board[8] === playerMark
+    ) {
+      console.log(`${playerMark} is the winner!`);
+    }
+
+    if (
+      _board[2] === playerMark &&
+      _board[4] === playerMark &&
+      _board[6] === playerMark
+    ) {
+      console.log(`${playerMark} is the winner!`);
+    }
+  };
+
   // Fill in square when clicked
-  const _fillSquare = (e, player) => {
+  const _fillSquare = (e) => {
     if (e.target.textContent !== "") {
       return;
     }
     const dataIndex = e.target.dataset.index;
-    board[dataIndex] = dataIndex;
+    _board[dataIndex] = activePlayer.name;
+    _checkGameStatus(activePlayer.name);
+    activePlayer = activePlayer === _playerX ? _playerO : _playerX;
     _renderBoard();
   };
 
