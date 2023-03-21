@@ -23,12 +23,16 @@ const DisplayController = (() => {
   const _playerO = Player("O");
 
   let activePlayer = _playerX;
+  let activeGame = true;
 
   // render a gameboard on DOM and add click event listeners
   const _renderBoard = () => {
     _sqaures.forEach((square, idx) => {
       square.addEventListener("click", _fillSquare);
       square.textContent = _board[idx];
+      if (!activeGame) {
+        square.removeEventListener("click", _fillSquare);
+      }
     });
   };
 
@@ -40,8 +44,7 @@ const DisplayController = (() => {
       _board[1] === playerMark &&
       _board[2] === playerMark
     ) {
-      console.log(`${playerMark} is the winner!`);
-      return;
+      endGame(playerMark);
     }
 
     // check for row two matches
@@ -50,8 +53,7 @@ const DisplayController = (() => {
       _board[4] === playerMark &&
       _board[5] === playerMark
     ) {
-      console.log(`${playerMark} is the winner!`);
-      return;
+      endGame(playerMark);
     }
 
     // check for row three matches
@@ -60,8 +62,7 @@ const DisplayController = (() => {
       _board[7] === playerMark &&
       _board[8] === playerMark
     ) {
-      console.log(`${playerMark} is the winner!`);
-      return;
+      endGame(playerMark);
     }
 
     // check column one for matches
@@ -70,8 +71,7 @@ const DisplayController = (() => {
       _board[3] === playerMark &&
       _board[6] === playerMark
     ) {
-      console.log(`${playerMark} is the winner!`);
-      return;
+      endGame(playerMark);
     }
 
     // check column two for matches
@@ -80,8 +80,7 @@ const DisplayController = (() => {
       _board[4] === playerMark &&
       _board[7] === playerMark
     ) {
-      console.log(`${playerMark} is the winner!`);
-      return;
+      endGame(playerMark);
     }
 
     // check column three for matches
@@ -90,8 +89,7 @@ const DisplayController = (() => {
       _board[5] === playerMark &&
       _board[8] === playerMark
     ) {
-      console.log(`${playerMark} is the winner!`);
-      return;
+      endGame(playerMark);
     }
 
     // check for diagonal matches
@@ -100,8 +98,7 @@ const DisplayController = (() => {
       _board[4] === playerMark &&
       _board[8] === playerMark
     ) {
-      console.log(`${playerMark} is the winner!`);
-      return;
+      endGame(playerMark);
     }
 
     if (
@@ -109,8 +106,7 @@ const DisplayController = (() => {
       _board[4] === playerMark &&
       _board[6] === playerMark
     ) {
-      console.log(`${playerMark} is the winner!`);
-      return;
+      endGame(playerMark);
     }
 
     // check if it's a tie
@@ -122,9 +118,18 @@ const DisplayController = (() => {
     }
 
     if (count === 0) {
-      console.log("it's a tie!");
-      return;
+      endGame("tie");
     }
+  };
+
+  // end the game
+  const endGame = (result) => {
+    if (result === "tie") {
+      console.log("It's a tie!");
+    } else {
+      console.log(`${result} is the winner!`);
+    }
+    activeGame = false;
   };
 
   // Fill in square when clicked
