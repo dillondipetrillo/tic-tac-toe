@@ -32,6 +32,7 @@ const DisplayController = (() => {
       square.textContent = _board[idx];
       if (!activeGame) {
         square.removeEventListener("click", _fillSquare);
+        square.classList.remove("btn");
       }
     });
   };

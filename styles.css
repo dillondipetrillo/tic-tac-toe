@@ -31,7 +31,7 @@ body {
   padding: 10px 20px;
 }
 
-#board .square:hover {
+#board .square.btn:hover {
   cursor: pointer;
 }
 
