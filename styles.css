@@ -65,7 +65,8 @@ body {
 }
 
 #play-info #players input,
-#play-info .start-reset {
+#play-info .start,
+#play-info .reset {
   width: 100%;
   font-size: 100%;
 }
@@ -75,11 +76,16 @@ body {
   padding: 5px;
 }
 
-.usernames:nth-of-type(1) {
+.usernames:nth-of-type(1),
+#play-info .start {
   margin-bottom: 20px;
 }
 
-#play-info .start-reset {
+#play-info .start {
   margin-top: 50px;
+}
+
+#play-info .start,
+#play-info .reset {
   padding: 5px;
 }
