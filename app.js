@@ -7,15 +7,15 @@ const Gameboard = () => {
   return { getGameboard };
 };
 
-const Player = (name) => {
-  return { name };
+const Player = (name, username) => {
+  return { name, username };
 };
 
 const DisplayController = (() => {
   // cache DOM elements
   const _sqaures = document.querySelectorAll(".square");
-  const _playerxInput = document.getElementById("playerx");
-  const _playeryInput = document.getElementById("playery");
+  let _playerxInput = document.getElementById("playerx");
+  let _playeroInput = document.getElementById("playero");
   const _startBtn = document.querySelector(".start");
   const _resetBtn = document.querySelector(".reset");
   const _gameStatus = document.querySelector("#game-info p");
@@ -24,8 +24,8 @@ const DisplayController = (() => {
   const _board = _boardModule.getGameboard();
 
   // create players
-  const _playerX = Player("X");
-  const _playerO = Player("O");
+  let _playerX = Player("X", _playerxInput.value);
+  let _playerO = Player("O", _playeroInput.value);
 
   let activePlayer = _playerX;
   let nonActivePlayer = _playerO;
@@ -47,13 +47,17 @@ const DisplayController = (() => {
 
   // check if there's a winner or tie
   const _checkGameStatus = (playerMark) => {
-    _gameStatus.textContent = `Turn: ${nonActivePlayer.name}`;
+    _gameStatus.textContent = `Turn: ${
+      nonActivePlayer.username !== ""
+        ? nonActivePlayer.username
+        : nonActivePlayer.name
+    }`;
 
     // check for row one matches
     if (
-      _board[0] === playerMark &&
-      _board[1] === playerMark &&
-      _board[2] === playerMark
+      _board[0] === playerMark.name &&
+      _board[1] === playerMark.name &&
+      _board[2] === playerMark.name
     ) {
       endGame(playerMark);
       return;
@@ -61,9 +65,9 @@ const DisplayController = (() => {
 
     // check for row two matches
     if (
-      _board[3] === playerMark &&
-      _board[4] === playerMark &&
-      _board[5] === playerMark
+      _board[3] === playerMark.name &&
+      _board[4] === playerMark.name &&
+      _board[5] === playerMark.name
     ) {
       endGame(playerMark);
       return;
@@ -71,9 +75,9 @@ const DisplayController = (() => {
 
     // check for row three matches
     if (
-      _board[6] === playerMark &&
-      _board[7] === playerMark &&
-      _board[8] === playerMark
+      _board[6] === playerMark.name &&
+      _board[7] === playerMark.name &&
+      _board[8] === playerMark.name
     ) {
       endGame(playerMark);
       return;
@@ -81,9 +85,9 @@ const DisplayController = (() => {
 
     // check column one for matches
     if (
-      _board[0] === playerMark &&
-      _board[3] === playerMark &&
-      _board[6] === playerMark
+      _board[0] === playerMark.name &&
+      _board[3] === playerMark.name &&
+      _board[6] === playerMark.name
     ) {
       endGame(playerMark);
       return;
@@ -91,9 +95,9 @@ const DisplayController = (() => {
 
     // check column two for matches
     if (
-      _board[1] === playerMark &&
-      _board[4] === playerMark &&
-      _board[7] === playerMark
+      _board[1] === playerMark.name &&
+      _board[4] === playerMark.name &&
+      _board[7] === playerMark.name
     ) {
       endGame(playerMark);
       return;
@@ -101,9 +105,9 @@ const DisplayController = (() => {
 
     // check column three for matches
     if (
-      _board[2] === playerMark &&
-      _board[5] === playerMark &&
-      _board[8] === playerMark
+      _board[2] === playerMark.name &&
+      _board[5] === playerMark.name &&
+      _board[8] === playerMark.name
     ) {
       endGame(playerMark);
       return;
@@ -111,18 +115,18 @@ const DisplayController = (() => {
 
     // check for diagonal matches
     if (
-      _board[0] === playerMark &&
-      _board[4] === playerMark &&
-      _board[8] === playerMark
+      _board[0] === playerMark.name &&
+      _board[4] === playerMark.name &&
+      _board[8] === playerMark.name
     ) {
       endGame(playerMark);
       return;
     }
 
     if (
-      _board[2] === playerMark &&
-      _board[4] === playerMark &&
-      _board[6] === playerMark
+      _board[2] === playerMark.name &&
+      _board[4] === playerMark.name &&
+      _board[6] === playerMark.name
     ) {
       endGame(playerMark);
       return;
@@ -147,7 +151,9 @@ const DisplayController = (() => {
     if (result === "tie") {
       _gameStatus.textContent = "It's a tie!";
     } else {
-      _gameStatus.textContent = `${result} is the winner!`;
+      _gameStatus.textContent = `${
+        result.username !== "" ? result.username : result.name
+      } is the winner!`;
     }
     activeGame = false;
     return;
@@ -160,17 +166,23 @@ const DisplayController = (() => {
     }
     const dataIndex = e.target.dataset.index;
     _board[dataIndex] = activePlayer.name;
-    _checkGameStatus(activePlayer.name);
+    _checkGameStatus(activePlayer);
     activePlayer = activePlayer === _playerX ? _playerO : _playerX;
     nonActivePlayer = nonActivePlayer === _playerO ? _playerX : _playerO;
     _renderBoard();
   };
 
   const _startGame = () => {
-    updateGameStatus(activePlayer.name);
+    if (_playerX.username !== "") {
+      updateGameStatus(activePlayer.username);
+    } else {
+      updateGameStatus(activePlayer.name);
+    }
     activeGame = true;
     _startBtn.disabled = true;
     _resetBtn.disabled = false;
+    _playerxInput.readOnly = true;
+    _playeroInput.readOnly = true;
     _renderBoard();
   };
 
@@ -187,6 +199,8 @@ const DisplayController = (() => {
     });
     _startBtn.disabled = false;
     _resetBtn.disabled = true;
+    _playerxInput.readOnly = false;
+    _playeroInput.readOnly = false;
   };
 
   const updateGameStatus = (playerMark) => {
@@ -197,4 +211,12 @@ const DisplayController = (() => {
 
   _startBtn.addEventListener("click", _startGame);
   _resetBtn.addEventListener("click", _resetGame);
+  _playerxInput.addEventListener(
+    "input",
+    (e) => (_playerX.username = e.target.value)
+  );
+  _playeroInput.addEventListener(
+    "input",
+    (e) => (_playerO.username = e.target.value)
+  );
 })();
