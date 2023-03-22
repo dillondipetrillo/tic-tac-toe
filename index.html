@@ -9,6 +9,9 @@
     <script src="app.js" defer></script>
   </head>
   <body>
+    <section id="game-info">
+      <p>Turn: Player X</p>
+    </section>
     <section id="game-board-container">
       <div id="board">
         <div class="square btn" data-index="0"></div>
@@ -21,6 +24,15 @@
         <div class="square btn" data-index="7"></div>
         <div class="square btn" data-index="8"></div>
       </div>
+    </section>
+    <section id="play-info">
+      <div id="players">
+        <label for="playerx" class="player-label">Player X</label>
+        <input type="text" class="usernames" id="playerx" name="playerx" />
+        <label for="playero" class="player-label">Player O</label>
+        <input type="text" class="usernames" id="playero" name="playero" />
+      </div>
+      <button class="start-reset">Start/Reset</button>
     </section>
   </body>
 </html>

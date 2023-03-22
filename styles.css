@@ -13,7 +13,7 @@ body {
 
 #game-board-container {
   max-width: 300px;
-  margin: 0 auto;
+  margin: 50px auto;
   padding: 0 20px;
 }
 
@@ -49,4 +49,37 @@ body {
 
 #board .square:nth-last-child(-n + 3) {
   border-bottom: none;
+}
+
+#play-info,
+#game-info {
+  min-width: 200px;
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+#game-info p {
+  text-align: center;
+  padding: 10px 0;
+}
+
+#play-info #players input,
+#play-info .start-reset {
+  width: 100%;
+  font-size: 100%;
+}
+
+.usernames {
+  margin-top: 5px;
+  padding: 5px;
+}
+
+.usernames:nth-of-type(1) {
+  margin-bottom: 20px;
+}
+
+#play-info .start-reset {
+  margin-top: 50px;
+  padding: 5px;
 }
