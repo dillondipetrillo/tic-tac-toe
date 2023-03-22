@@ -77,12 +77,21 @@ body {
 }
 
 .usernames:nth-of-type(1),
-#play-info .start {
+#play-info .start,
+.ai-select {
   margin-bottom: 20px;
 }
 
-#play-info .start {
+.ai-select {
   margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  align-items: center;
+}
+
+.ai-select select {
+  padding: 5px;
+  font-size: 100%;
 }
 
 #play-info .start,

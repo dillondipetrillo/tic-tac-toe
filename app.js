@@ -19,6 +19,7 @@ const DisplayController = (() => {
   const _startBtn = document.querySelector(".start");
   const _resetBtn = document.querySelector(".reset");
   const _gameStatus = document.querySelector("#game-info p");
+  const _aiSelect = document.getElementById("opponent");
 
   const _boardModule = Gameboard();
   const _board = _boardModule.getGameboard();
@@ -26,6 +27,7 @@ const DisplayController = (() => {
   // create players
   let _playerX = Player("X", _playerxInput.value);
   let _playerO = Player("O", _playeroInput.value);
+  let useAI = false;
 
   let activePlayer = _playerX;
   let nonActivePlayer = _playerO;
@@ -34,8 +36,15 @@ const DisplayController = (() => {
 
   // render a gameboard on DOM and add click event listeners
   const _renderBoard = () => {
+    // do AI move
+    useAI && activePlayer === _playerO && activeGame ? aiMove() : null;
+
     _sqaures.forEach((square, idx) => {
-      square.addEventListener("click", _fillSquare);
+      if (useAI && activePlayer === _playerO) {
+        square.removeEventListener("click", _fillSquare);
+      } else {
+        square.addEventListener("click", _fillSquare);
+      }
       square.classList.add("btn");
       square.textContent = _board[idx];
       if (!activeGame) {
@@ -43,6 +52,23 @@ const DisplayController = (() => {
         square.classList.remove("btn");
       }
     });
+  };
+
+  const aiMove = () => {
+    // get available spaces
+    let openSpots = [];
+    _board.forEach((square, idx) => {
+      if (square === "") {
+        openSpots.push(idx);
+      }
+    });
+
+    // pick random index of available spaces
+    const randomIndex = Math.floor(Math.random() * openSpots.length);
+    const randomElem = _sqaures[openSpots[randomIndex]];
+
+    // make AI move
+    setTimeout(() => _fillSquare(randomElem), 900);
   };
 
   // check if there's a winner or tie
@@ -161,10 +187,15 @@ const DisplayController = (() => {
 
   // Fill in square when clicked
   const _fillSquare = (e) => {
-    if (e.target.textContent !== "") {
-      return;
+    let dataIndex;
+    if (useAI && activePlayer === _playerO) {
+      dataIndex = e.dataset.index;
+    } else {
+      if (e.target.textContent !== "") {
+        return;
+      }
+      dataIndex = e.target.dataset.index;
     }
-    const dataIndex = e.target.dataset.index;
     _board[dataIndex] = activePlayer.name;
     _checkGameStatus(activePlayer);
     activePlayer = activePlayer === _playerX ? _playerO : _playerX;
@@ -173,6 +204,14 @@ const DisplayController = (() => {
   };
 
   const _startGame = () => {
+    // check if AI player should be used
+    if (
+      _aiSelect.value.toLowerCase() === "easy" ||
+      _aiSelect.value.toLowerCase() === "hard"
+    ) {
+      useAI = true;
+    }
+
     if (_playerX.username !== "") {
       updateGameStatus(activePlayer.username);
     } else {
@@ -183,6 +222,7 @@ const DisplayController = (() => {
     _resetBtn.disabled = false;
     _playerxInput.readOnly = true;
     _playeroInput.readOnly = true;
+    _aiSelect.disabled = true;
     _renderBoard();
   };
 
@@ -201,6 +241,7 @@ const DisplayController = (() => {
     _resetBtn.disabled = true;
     _playerxInput.readOnly = false;
     _playeroInput.readOnly = false;
+    _aiSelect.disabled = false;
   };
 
   const updateGameStatus = (playerMark) => {
@@ -218,5 +259,11 @@ const DisplayController = (() => {
   _playeroInput.addEventListener(
     "input",
     (e) => (_playerO.username = e.target.value)
+  );
+  _aiSelect.addEventListener("change", (e) =>
+    e.target.value.toLowerCase() === "easy" ||
+    e.target.value.toLowerCase() === "hard"
+      ? (useAI = true)
+      : (useAI = false)
   );
 })();

@@ -27,12 +27,20 @@
     </section>
     <section id="play-info">
       <div id="players">
-        <label for="playerx" class="player-label">Player X</label>
+        <label for="playerx" class="player-label">Player 1</label>
         <input type="text" class="usernames" id="playerx" name="playerx" />
-        <label for="playero" class="player-label">Player O</label>
+        <label for="playero" class="player-label">Player 2</label>
         <input type="text" class="usernames" id="playero" name="playero" />
       </div>
       <div id="btns">
+        <div class="ai-select">
+          <label for="opponent" class="opponent-label">Play against A.I?</label>
+          <select name="opponent" id="opponent">
+            <option value="no" selected>No</option>
+            <option value="easy">Yes - Easy</option>
+            <option value="hard">Yes - Hard</option>
+          </select>
+        </div>
         <button class="start">Start</button>
         <button class="reset">Reset</button>
       </div>
