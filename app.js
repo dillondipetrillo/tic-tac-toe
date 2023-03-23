@@ -37,7 +37,7 @@ const DisplayController = (() => {
   // render a gameboard on DOM and add click event listeners
   const _renderBoard = () => {
     // do AI move
-    useAI && activePlayer === _playerO && activeGame ? aiMove() : null;
+    useAI && activePlayer === _playerO && activeGame ? easyAIMove() : null;
 
     _sqaures.forEach((square, idx) => {
       if (useAI && activePlayer === _playerO) {
@@ -54,7 +54,8 @@ const DisplayController = (() => {
     });
   };
 
-  const aiMove = () => {
+  // random AI move
+  const easyAIMove = () => {
     // get available spaces
     let openSpots = [];
     _board.forEach((square, idx) => {
