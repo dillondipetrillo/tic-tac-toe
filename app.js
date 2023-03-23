@@ -36,8 +36,21 @@ const DisplayController = (() => {
 
   // render a gameboard on DOM and add click event listeners
   const _renderBoard = () => {
-    // do AI move
-    useAI && activePlayer === _playerO && activeGame ? easyAIMove() : null;
+    // do easy AI move
+    useAI &&
+    activePlayer === _playerO &&
+    activeGame &&
+    _aiSelect.value.toLowerCase() === "easy"
+      ? easyAIMove()
+      : null;
+
+    // do hard AI move
+    useAI &&
+    activePlayer === _playerO &&
+    activeGame &&
+    _aiSelect.value.toLowerCase() === "hard"
+      ? hardAIMove()
+      : null;
 
     _sqaures.forEach((square, idx) => {
       if (useAI && activePlayer === _playerO) {
@@ -54,15 +67,21 @@ const DisplayController = (() => {
     });
   };
 
-  // random AI move
-  const easyAIMove = () => {
-    // get available spaces
+  // get open spots for AI
+  const getOpenSpots = () => {
     let openSpots = [];
     _board.forEach((square, idx) => {
       if (square === "") {
         openSpots.push(idx);
       }
     });
+    return openSpots;
+  };
+
+  // random AI move
+  const easyAIMove = () => {
+    // get available spaces
+    let openSpots = getOpenSpots();
 
     // pick random index of available spaces
     const randomIndex = Math.floor(Math.random() * openSpots.length);
@@ -70,6 +89,11 @@ const DisplayController = (() => {
 
     // make AI move
     setTimeout(() => _fillSquare(randomElem), 900);
+  };
+
+  // minimax AI move
+  const hardAIMove = () => {
+    //
   };
 
   // check if there's a winner or tie
@@ -87,7 +111,7 @@ const DisplayController = (() => {
       _board[2] === playerMark.name
     ) {
       endGame(playerMark);
-      return;
+      return true;
     }
 
     // check for row two matches
@@ -97,7 +121,7 @@ const DisplayController = (() => {
       _board[5] === playerMark.name
     ) {
       endGame(playerMark);
-      return;
+      return true;
     }
 
     // check for row three matches
@@ -107,7 +131,7 @@ const DisplayController = (() => {
       _board[8] === playerMark.name
     ) {
       endGame(playerMark);
-      return;
+      return true;
     }
 
     // check column one for matches
@@ -117,7 +141,7 @@ const DisplayController = (() => {
       _board[6] === playerMark.name
     ) {
       endGame(playerMark);
-      return;
+      return true;
     }
 
     // check column two for matches
@@ -127,7 +151,7 @@ const DisplayController = (() => {
       _board[7] === playerMark.name
     ) {
       endGame(playerMark);
-      return;
+      return true;
     }
 
     // check column three for matches
@@ -137,7 +161,7 @@ const DisplayController = (() => {
       _board[8] === playerMark.name
     ) {
       endGame(playerMark);
-      return;
+      return true;
     }
 
     // check for diagonal matches
@@ -147,7 +171,7 @@ const DisplayController = (() => {
       _board[8] === playerMark.name
     ) {
       endGame(playerMark);
-      return;
+      return true;
     }
 
     if (
@@ -156,7 +180,7 @@ const DisplayController = (() => {
       _board[6] === playerMark.name
     ) {
       endGame(playerMark);
-      return;
+      return true;
     }
 
     // check if it's a tie
@@ -169,8 +193,10 @@ const DisplayController = (() => {
 
     if (count === 0) {
       endGame("tie");
-      return;
+      return true;
     }
+
+    return false;
   };
 
   // end the game
